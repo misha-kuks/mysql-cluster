@@ -23,13 +23,17 @@
 
 ## Galera cluster check status from db1:
 
--show status like 'wsrep_cluster_status';
--show status like 'wsrep_cluster_size';
--show status like 'wsrep_local_state_comment';
+- show status like 'wsrep_cluster_status';
+- show status like 'wsrep_cluster_size';
+- show status like 'wsrep_local_state_comment';
 
 ![image](screens/wsrep_db1.png)
 
 ### Check after crash 1 VM:
+
+- show status like 'wsrep_cluster_status';
+- show status like 'wsrep_cluster_size';
+- show status like 'wsrep_local_state_comment';
 
 ![image](screens/wsrep_db2_after_crash.png)
 
