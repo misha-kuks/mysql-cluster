@@ -1,0 +1,14 @@
+---
+# handlers file for glusterfs
+- name: start glusterfsd
+  service: 
+    name: glusterd
+    state: started
+    enabled: true
+
+- name: restart glusterfs-server
+  become: true
+  service: 
+    name: glusterd
+    state: restarted
+    enabled: true

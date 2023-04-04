@@ -1,0 +1,21 @@
+---
+# tasks file for haproxy
+- name: Install package
+  apt: 
+    name: haproxy
+    state: present
+- name: Change sysctl
+  lineinfile: 
+    line: net.ipv4.ip_nonlocal_bind = 1
+    path: /etc/sysctl.conf
+    state: present
+- name: Sysctl -p
+  shell: sysctl -p
+- name: Copy config file
+  copy: 
+    src: haproxy.cfg
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: '0644'
+  notify: haproxy restart

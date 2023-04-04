@@ -1,0 +1,48 @@
+---
+# tasks file for glusterfs
+- name: Wait 10
+  wait_for:
+    timeout: 10
+
+- name: Install package
+  apt:
+    name: glusterfs-server
+    update_cache: true
+    state: present
+   
+
+- name: start glusterfsd
+  service: 
+    name: glusterd
+    state: started
+    enabled: true
+
+- name: Wait 20
+  wait_for: 
+    timeout: 20
+
+- name: Create peer
+  shell: gluster peer probe back2
+  when: ansible_facts['hostname'] == "back1"
+  run_once: true
+
+
+- name: Create partition /dev/vdb
+  shell: >
+    echo '/dev/vdb1 /gluster-storage01 ext4 defaults 0 0' >> /etc/fstab &&
+    mount -a
+  ignore_errors: true
+
+
+- name: "Create volume1 glusterfs"
+  shell: > 
+    gluster volume create volume1 replica 2 back1:/gluster-storage01 back2:/gluster-storage01 force
+  when: ansible_facts['hostname'] == "back1"
+  run_once: true
+  ignore_errors: true
+  
+- name: Start volume1
+  shell: gluster volume start volume1
+  when: ansible_facts['hostname'] == "back1"
+  ignore_errors: true
+  

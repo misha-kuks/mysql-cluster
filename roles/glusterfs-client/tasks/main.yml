@@ -1,0 +1,25 @@
+---
+# tasks file for glusterfs-client
+- name: Install packages
+  apt: 
+    name: glusterfs-client
+    state: present
+
+- name: Create webroot
+  file:
+    state: directory
+    path: /srv/www/
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Mount Gluster volume
+  mount:
+    fstype: glusterfs
+    src: back1:/volume1
+    path: /srv/www/
+    opts: "defaults,_netdev"
+    state: present
+
+- name: mount -a
+  shell: mount -a

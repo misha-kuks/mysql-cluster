@@ -1,0 +1,23 @@
+- hosts: all
+  become: true
+  roles:
+    - preconfig
+- hosts: database
+  become: true
+  roles:
+    - mysql
+- hosts: proxy
+  become: true
+  roles:
+    - keepalived
+    - haproxy
+- hosts: backend
+  become: true
+  roles:
+    - glusterfs-server
+- hosts: web
+  become: true
+  roles:
+    - glusterfs-client
+    - nginx
+    - wordpress
